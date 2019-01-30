@@ -16,20 +16,14 @@
 
 /// <reference path="../../typings/tsd.d.ts" />
 
-declare var require; // TODO: bad hack to make TSC compile, possible reason https://github.com/Microsoft/TypeScript/issues/954
-var expect = require('expect.js');
+import { expect } from 'chai';
+import Macaroon from '../../main/ts/Macaroon';
 
-import Macaroon = require('../../main/ts/Macaroon');
-
-describe('MacaroonTest', function () {
-
-  it("macaroons can be constructed via given attributes", function () {
-
-    var m = new Macaroon("location", "identifier", new Buffer("cafebabe", 'hex'));
-
-    expect(m.identifier).to.be('identifier');
-    expect(m.location).to.be('location');
-    expect(m.signature).to.be('cafebabe');
-  });
-
+describe('Macaron entity', () => {
+    it('macaroons can be constructed via given attributes', () => {
+        const m:Macaroon = new Macaroon("location", "identifier",  new Buffer("cafebabe", 'hex'));
+        expect(m.location).to.equal('location');
+        expect(m.identifier).to.equal('identifier');
+        expect(m.signature).to.equal('cafebabe');
+    });
 });

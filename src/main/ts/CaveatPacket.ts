@@ -14,22 +14,28 @@
  * limitations under the License.
  */
 
-import CaveatPacketType = require('./CaveatPacketType');
-import MacaroonsConstants = require('./MacaroonsConstants');
-import Base64Tools = require('./Base64Tools');
+import Base64Tools from './Base64Tools';
+import {CaveatPacketType} from './CaveatPacketType';
+import MacaroonsConstants from './MacaroonsConstants';
 
-export = CaveatPacket;
-class CaveatPacket {
 
+
+export default class CaveatPacket {
+
+  // tslint:disable-next-line:no-reserved-keywords
   public type:CaveatPacketType;
   public rawValue:Buffer;
 
   private valueAsText:string;
 
+  // tslint:disable-next-line:no-reserved-keywords
   constructor(type:CaveatPacketType, valueAsText:string);
+  // tslint:disable-next-line:no-reserved-keywords
   constructor(type:CaveatPacketType, valueAsBuffer:Buffer);
+  // tslint:disable-next-line:no-reserved-keywords
   constructor(type:CaveatPacketType, value:any) {
-    if (typeof value === 'undefined') throw new Error("Missing second parameter 'value' from type 'string' or 'Buffer'");
+    // tslint:disable-next-line:no-typeof-undefined
+    if (typeof value === 'undefined') { throw new Error("Missing second parameter 'value' from type 'string' or 'Buffer'"); }
 
     //assert type != null;
     //assert rawValue != null;
@@ -47,11 +53,12 @@ class CaveatPacket {
   }
 
   public getValueAsText():string {
-    if (this.valueAsText == null) {
-      this.valueAsText = (this.type == CaveatPacketType.vid)
+    if (this.valueAsText === undefined) {
+      this.valueAsText = (this.type === CaveatPacketType.vid)
           ? Base64Tools.encodeBase64UrlSafe(this.rawValue.toString('base64'))
           : this.rawValue.toString(MacaroonsConstants.IDENTIFIER_CHARSET);
     }
+    
     return this.valueAsText;
   }
 }

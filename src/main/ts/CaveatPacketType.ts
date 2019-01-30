@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-export = CaveatPacketType;
-
-enum CaveatPacketType {
+export  enum CaveatPacketType {
   location,
   identifier,
   signature,

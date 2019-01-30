@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-export = MacaroonsConstants;
-
-class MacaroonsConstants {
+export default class MacaroonsConstants {
   /* public constants ... copied from libmacaroons */
 
   /**
@@ -32,7 +30,7 @@ class MacaroonsConstants {
    * Recommended secret length
    */
   public static MACAROON_SUGGESTED_SECRET_LENGTH:number = 32;
-  public static MACAROON_HASH_BYTES:number = 32;
+  public static MACAROON_HASH_BYTES:number  = 32;
 
   /* ********************************* */
   /* more internal use ... */

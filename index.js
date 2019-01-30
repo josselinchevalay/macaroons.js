@@ -15,14 +15,14 @@
  */
 
 module.exports = {
-  "MacaroonsConstants" : require('./lib/MacaroonsConstants'),
-  "MacaroonsBuilder" : require('./lib/MacaroonsBuilder'),
-  "MacaroonsVerifier" : require('./lib/MacaroonsVerifier'),
-  "MacaroonsSerializer" : require('./lib/MacaroonsSerializer'),
-  "MacaroonsDeSerializer" : require('./lib/MacaroonsDeSerializer'),
-  "Macaroon" : require('./lib/Macaroon'),
+    "MacaroonsConstants": require('./lib/MacaroonsConstants'),
+    "MacaroonsBuilder": require('./lib/MacaroonsBuilder'),
+    "MacaroonsVerifier": require('./lib/MacaroonsVerifier'),
+    "MacaroonsSerializer": require('./lib/MacaroonsSerializer'),
+    "MacaroonsDeSerializer": require('./lib/MacaroonsDeSerializer'),
+    "Macaroon": require('./lib/Macaroon'),
 
-  "verifier" : {
-    "TimestampCaveatVerifier" : require('./lib/verifier/TimestampCaveatVerifier')
-  }
+    "verifier": {
+        "TimestampCaveatVerifier": require('./lib/verifier/TimestampCaveatVerifier')
+    }
 };

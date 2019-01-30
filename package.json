@@ -1,58 +1,65 @@
 {
-  "name": "macaroons.js",
-  "version": "0.3.8",
-  "description": "Javascript implementation of Macaroons: Cookies with Contextual Caveats for Decentralized Authorization in the Cloud.",
-  "readmeFilename": "README.md",
-  "main": "index.js",
-  "scripts": {
-    "test": "node ./node_modules/grunt-cli/bin/grunt test",
-    "before_deploy": "node ./node_modules/grunt-cli/bin/grunt clean default"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nitram509/macaroons.js"
-  },
-  "keywords": [
-    "security",
-    "authentication",
-    "crypto",
-    "cloud",
-    "microservices",
-    "cookies",
-    "caveats",
-    "authorization",
-    "macaroons"
-  ],
-  "author": {
-    "name": "Martin W. Kirst",
-    "url": "https://twitter.com/nitram509"
-  },
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/nitram509/macaroons.js/issues"
-  },
-  "homepage": "https://github.com/nitram509/macaroons.js",
-  "engines": {
-    "node": ">=0.11",
-    "npm": ">=1.4"
-  },
-  "dependencies": {
-    "ecma-nacl": "^2.0.1",
-    "typedarray-to-buffer": "^3.0.1"
-  },
-  "devDependencies": {
-    "expect.js": "~0.3.1",
-    "grunt": "~0.4.5",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-copy": "^0.8.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-test": "^0.13.2",
-    "grunt-typescript": "^0.6.1",
-    "mocha": "^3.2.0",
-    "typescript": "^1.6.2"
-  },
-  "directories": {
-    "lib": "./lib"
-  }
+    "name": "macaroons.js",
+    "version": "0.3.8",
+    "description": "Javascript implementation of Macaroons: Cookies with Contextual Caveats for Decentralized Authorization in the Cloud.",
+    "readmeFilename": "README.md",
+    "main": "index.js",
+    "scripts": {
+        "clean": "rimraf coverage build tmp",
+        "build": "tsc -p tsconfig.release.json",
+        "build:watch": "tsc -w -p tsconfig.release.json",
+        "lint": "tslint -t stylish --project \"tsconfig.json\"",
+        "test": "mocha --require ts-node/register src/test/ts/**/*.ts",
+        "test:watch": ""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nitram509/macaroons.js"
+    },
+    "keywords": [
+        "security",
+        "authentication",
+        "crypto",
+        "cloud",
+        "microservices",
+        "cookies",
+        "caveats",
+        "authorization",
+        "macaroons"
+    ],
+    "author": {
+        "name": "Martin W. Kirst",
+        "url": "https://twitter.com/nitram509"
+    },
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/nitram509/macaroons.js/issues"
+    },
+    "homepage": "https://github.com/nitram509/macaroons.js",
+    "engines": {
+        "node": ">=0.11",
+        "npm": ">=1.4"
+    },
+    "dependencies": {
+        "ecma-nacl": "^2.0.1",
+        "typedarray-to-buffer": "^3.0.1"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.1.7",
+        "@types/mocha": "^5.2.5",
+        "@types/node": "^10.12.18",
+        "chai": "^4.2.0",
+        "mocha": "^5.2.0",
+        "prettier": "1.15.3",
+        "rimraf": "^2.6.3",
+        "ts-node": "^8.0.1",
+        "tslint": "~5.12.0",
+        "tslint-config-prettier": "1.17.0",
+        "tslint-microsoft-contrib": "~6.0.0",
+        "tsutils": "~3.7.0",
+        "typescript": "^3.2.4"
+    },
+    "directories": {
+        "lib": "./lib"
+    }
 }

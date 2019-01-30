@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export = Macaroon;
 
-import CaveatPacket = require('./CaveatPacket');
-import CaveatPacketType = require('./CaveatPacketType');
-import MacaroonsSerializer = require('./MacaroonsSerializer');
-import MacaroonsConstants = require('./MacaroonsConstants');
+import CaveatPacket from './CaveatPacket';
+import {CaveatPacketType} from './CaveatPacketType';
+import MacaroonsConstants from './MacaroonsConstants';
+import MacaroonsSerializer from './MacaroonsSerializer';
+
 
 /**
  * <p>
@@ -30,7 +30,8 @@ import MacaroonsConstants = require('./MacaroonsConstants');
  *
  * @see <a href="http://research.google.com/pubs/pub41892.html">http://research.google.com/pubs/pub41892.html</a>
  */
-class Macaroon {
+// tslint:disable-next-line:no-default-export
+export default class Macaroon {
 
   public location:string;
   public identifier:string;
@@ -59,16 +60,18 @@ class Macaroon {
   }
 
   private createKeyValuePacket(type:CaveatPacketType, value:string):string {
-    return value != null ? CaveatPacketType[type] + MacaroonsConstants.KEY_VALUE_SEPARATOR_STR + value + MacaroonsConstants.LINE_SEPARATOR_STR : "";
+    return value !== undefined ? CaveatPacketType[type] + MacaroonsConstants.KEY_VALUE_SEPARATOR_STR + value + MacaroonsConstants.LINE_SEPARATOR_STR : "";
   }
 
-  private createCaveatsPackets(caveats:Array<CaveatPacket>):string {
-    if (caveats == null) return "";
-    var text = "";
-    for (var i = 0; i < caveats.length; i++) {
-      var packet:CaveatPacket = caveats[i];
+  private createCaveatsPackets(caveats:CaveatPacket[]):string {
+    if (caveats === undefined) { return ""; }
+    let text = "";
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < caveats.length; i++) {
+      const packet:CaveatPacket = caveats[i];
       text += this.createKeyValuePacket(packet.type, packet.getValueAsText());
     }
+    
     return text;
   }
 }

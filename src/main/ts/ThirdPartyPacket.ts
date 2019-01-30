@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-export = ThirdPartyPacket;
-class ThirdPartyPacket {
+export default class ThirdPartyPacket {
 
   public  signature:Buffer;
-  public  vid_data:Buffer;
+  public  vidData:Buffer;
 
-  constructor(signature:Buffer, vid_data:Buffer) {
+  constructor(signature:Buffer, vidData:Buffer) {
     this.signature = signature;
-    this.vid_data = vid_data;
+    this.vidData = vidData;
   }
 
 }

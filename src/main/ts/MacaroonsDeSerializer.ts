@@ -14,32 +14,38 @@
  * limitations under the License.
  */
 
-import Macaroon = require('./Macaroon');
-import CaveatPacket = require('./CaveatPacket');
-import CaveatPacketType = require('./CaveatPacketType');
-import MacaroonsConstants = require('./MacaroonsConstants');
-import Base64Tools = require('./Base64Tools');
+import Base64Tools from './Base64Tools';
+import CaveatPacket from './CaveatPacket';
+import {CaveatPacketType} from './CaveatPacketType';
+import Macaroon from './Macaroon';
+import MacaroonsConstants from './MacaroonsConstants';
 
-export = MacaroonsDeSerializer;
-class MacaroonsDeSerializer {
+
+
+ export default class MacaroonsDeSerializer {
 
   public static deserialize(serializedMacaroon:string):Macaroon {
-    var data = new Buffer(Base64Tools.transformBase64UrlSafe2Base64(serializedMacaroon), 'base64');
-    var minLength = MacaroonsConstants.MACAROON_HASH_BYTES + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN + MacaroonsConstants.SIGNATURE.length;
+    const data = new Buffer(Base64Tools.transformBase64UrlSafe2Base64(serializedMacaroon), 'base64');
+    const minLength = MacaroonsConstants.MACAROON_HASH_BYTES + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN + MacaroonsConstants.SIGNATURE.length;
     if (data.length < minLength) {
-      throw new Error("Couldn't deserialize macaroon. Not enough bytes for signature found. There have to be at least " + minLength + " bytes");
+      throw new Error(`Couldn't deserialize macaroon. Not enough bytes for signature found. There have to be at least ${minLength} bytes`);
     }
+
     return MacaroonsDeSerializer.deserializeStream(new StatefulPacketReader(data));
   }
 
-  private static deserializeStream(packetReader:StatefulPacketReader):Macaroon {
-    var location:string = null;
-    var identifier:string = null;
-    var caveats:Array<CaveatPacket> = [];
-    var signature:Buffer = null;
-    var s;
-    var raw;
-    for (var packet:Packet; (packet = MacaroonsDeSerializer.readPacket(packetReader)) != null;) {
+private static deserializeStream(packetReader:StatefulPacketReader):Macaroon {
+    let location:string = "";
+    let identifier:string = "";
+    const caveats:CaveatPacket[] = [];
+    // tslint:disable-next-line:no-null-keyword
+    let signature:Buffer = null;
+    let s;
+    let raw;
+    /*let packet:Packet;
+    packet = MacaroonsDeSerializer.readPacket(packetReader)
+    while( packet !== null) {*/
+    for (let packet:Packet; (packet = MacaroonsDeSerializer.readPacket(packetReader)) !== undefined;) {
       if (MacaroonsDeSerializer.bytesStartWith(packet.data, MacaroonsConstants.LOCATION_BYTES)) {
         location = MacaroonsDeSerializer.parsePacket(packet, MacaroonsConstants.LOCATION_BYTES);
       } else if (MacaroonsDeSerializer.bytesStartWith(packet.data, MacaroonsConstants.IDENTIFIER_BYTES)) {
@@ -57,54 +63,59 @@ class MacaroonsDeSerializer {
         signature = MacaroonsDeSerializer.parseSignature(packet, MacaroonsConstants.SIGNATURE_BYTES);
       }
     }
+    
     return new Macaroon(location, identifier, signature, caveats);
   }
 
   private static parseSignature(packet:Packet, signaturePacketData:Buffer):Buffer {
-    var headerLen = signaturePacketData.length + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN;
-    var len = Math.min(packet.data.length - headerLen, MacaroonsConstants.MACAROON_HASH_BYTES);
-    var signature = new Buffer(len);
+    const headerLen = signaturePacketData.length + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN;
+    const len = Math.min(packet.data.length - headerLen, MacaroonsConstants.MACAROON_HASH_BYTES);
+    const signature = new Buffer(len);
     packet.data.copy(signature, 0, headerLen, headerLen + len);
+   
     return signature;
   }
 
   private static parsePacket(packet:Packet, header:Buffer):string {
-    var headerLen = header.length + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN;
-    var len = packet.data.length - headerLen;
-    if (packet.data[headerLen + len - 1] == MacaroonsConstants.LINE_SEPARATOR) len--;
+    const headerLen = header.length + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN;
+    let len = packet.data.length - headerLen;
+    if (packet.data[headerLen + len - 1] === MacaroonsConstants.LINE_SEPARATOR) { len--; }
+    
     return packet.data.toString(MacaroonsConstants.IDENTIFIER_CHARSET, headerLen, headerLen + len);
   }
 
   private static parseRawPacket(packet:Packet, header:Buffer):Buffer {
-    var headerLen = header.length + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN;
-    var len = packet.data.length - headerLen - MacaroonsConstants.LINE_SEPARATOR_LEN;
-    var raw = new Buffer(len);
+    const headerLen = header.length + MacaroonsConstants.KEY_VALUE_SEPARATOR_LEN;
+    const len = packet.data.length - headerLen - MacaroonsConstants.LINE_SEPARATOR_LEN;
+    const raw = new Buffer(len);
     packet.data.copy(raw, 0, headerLen, headerLen + len);
+    
     return raw;
   }
 
   private static bytesStartWith(bytes:Buffer, startBytes:Buffer):boolean {
-    if (bytes.length < startBytes.length) return false;
-    for (var i = 0, len = startBytes.length; i < len; i++) {
-      if (bytes[i] != startBytes[i]) return false;
+    if (bytes.length < startBytes.length) { return false; }
+    for (let i = 0, len = startBytes.length; i < len; i++) {
+      if (bytes[i] !== startBytes[i]) { return false; }
     }
+    
     return true;
   }
 
   private static readPacket(stream:StatefulPacketReader):Packet {
-    if (stream.isEOF()) return null;
+    if (stream.isEOF()) { return undefined; }
     if (!stream.isPacketHeaderAvailable()) {
-      throw new Error("Not enough header bytes available. Needed " + MacaroonsConstants.PACKET_PREFIX_LENGTH + " bytes.");
+      throw new Error(`Not enough header bytes available. Needed ${MacaroonsConstants.PACKET_PREFIX_LENGTH} bytes.`);
     }
-    var size = stream.readPacketHeader();
+    const size = stream.readPacketHeader();
     //assert size <= PACKET_MAX_SIZE;
-
-    var data = new Buffer(size - MacaroonsConstants.PACKET_PREFIX_LENGTH);
-    var read = stream.read(data);
-    if (read < 0) return null;
-    if (read != data.length) {
-      throw new Error("Not enough data bytes available. Needed " + data.length + " bytes, but was only " + read);
+    const data = new Buffer(size - MacaroonsConstants.PACKET_PREFIX_LENGTH);
+    const read = stream.read(data);
+    if (read < 0) { return undefined; }
+    if (read !== data.length) {
+      throw new Error(`Not enough data bytes available. Needed ${data.length} bytes, but was only  ${read}`);
     }
+
     return new Packet(size, data);
   }
 
@@ -112,8 +123,8 @@ class MacaroonsDeSerializer {
 
 
 class Packet {
-  size:number;
-  data:Buffer;
+  public size:number;
+  public data:Buffer;
 
   constructor(size:number, data:Buffer) {
     this.size = size;
@@ -123,7 +134,7 @@ class Packet {
 
 
 class StatefulPacketReader {
-  private static HEX_ALPHABET:Array<number> = [
+  private static HEX_ALPHABET:number[] = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -141,12 +152,14 @@ class StatefulPacketReader {
   }
 
   public read(data:Buffer):number {
-    var len = Math.min(data.length, this.buffer.length - this.seekIndex);
+    const len = Math.min(data.length, this.buffer.length - this.seekIndex);
     if (len > 0) {
       this.buffer.copy(data, 0, this.seekIndex, this.seekIndex + len);
       this.seekIndex += len;
+      
       return len;
     }
+    
     return -1;
   }
 

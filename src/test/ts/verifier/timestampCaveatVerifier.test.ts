@@ -16,20 +16,21 @@
 
 /// <reference path="../../../typings/tsd.d.ts" />
 
-declare var require; // TODO: bad hack to make TSC compile, possible reason https://github.com/Microsoft/TypeScript/issues/954
-var expect = require('expect.js');
+import {expect} from 'chai';
+import TimestampCaveatVerifier from '../../../main/ts/verifier/TimestampCaveatVerifier';
 
-import verifier = require('../../../main/ts/verifier/TimestampCaveatVerifier');
+describe('TimestampCaveatVerifierTest', () => {
 
-describe('TimestampCaveatVerifierTest', function () {
-
-  it("is valid using full qualified timestamp with timezone", function () {
-    expect(verifier('time < 2020-12-31T18:23:45Z')).to.be(true);
+  it("is valid using full qualified timestamp with timezone", () => {
+    // tslint:disable-next-line:chai-vague-errors
+    expect(TimestampCaveatVerifier('time < 2020-12-31T18:23:45Z')).to.equal(true);
   });
 
   
+  // tslint:disable-next-line:no-function-expression
   it("verifier is robust", function () {
-    expect(verifier('time < foobar')).to.be(false);
+    // tslint:disable-next-line:chai-vague-errors
+    expect(TimestampCaveatVerifier('time < foobar')).to.equal(false);
   });
 
 });

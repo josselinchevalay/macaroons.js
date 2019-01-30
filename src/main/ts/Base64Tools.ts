@@ -16,14 +16,15 @@
 
 /// <reference path="../../typings/tsd.d.ts" />
 
-export = Base64Tools;
-class Base64Tools {
+export default class Base64Tools {
 
-  private static BASE64_PADDING:string = '===';
+  public static BASE64_PADDING:string = '===';
+
 
   public static transformBase64UrlSafe2Base64(base64:string):string {
     return base64.replace(/-/g, '+').replace(/_/g, '/') + Base64Tools.BASE64_PADDING.substr(0, 3 - (base64.length % 3));
   }
+
 
   public static encodeBase64UrlSafe(base64:string):string {
     return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
