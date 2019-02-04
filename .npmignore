@@ -1,6 +1,8 @@
 .travis.yml
 Gruntfile.js
 tsd.json
+tsconfig.json
+tsconfig.release.json
 
 *.iml
 .idea
