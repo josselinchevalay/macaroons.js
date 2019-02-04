@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import Base64Tools from './Base64Tools';
 import CaveatPacket from './CaveatPacket';
 import {CaveatPacketType} from './CaveatPacketType';

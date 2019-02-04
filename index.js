@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
+const path = require('path');
+const PATH_LIB = path.join(__dirname, "/lib/src/main/ts/");
 module.exports = {
-    "MacaroonsConstants": require('./lib/MacaroonsConstants'),
-    "MacaroonsBuilder": require('./lib/MacaroonsBuilder'),
-    "MacaroonsVerifier": require('./lib/MacaroonsVerifier'),
-    "MacaroonsSerializer": require('./lib/MacaroonsSerializer'),
-    "MacaroonsDeSerializer": require('./lib/MacaroonsDeSerializer'),
-    "Macaroon": require('./lib/Macaroon'),
+    "MacaroonsConstants": require(path.join(PATH_LIB, 'MacaroonsConstants')).default,
+    "MacaroonsBuilder": require(path.join(PATH_LIB, 'MacaroonsBuilder')).default,
+    "MacaroonsVerifier": require(path.join(PATH_LIB, 'MacaroonsVerifier')).default,
+    "MacaroonsSerializer": require(path.join(PATH_LIB, 'MacaroonsSerializer')).default,
+    "MacaroonsDeSerializer": require(path.join(PATH_LIB, 'MacaroonsDeSerializer')).default,
+    "Macaroon": require(path.join(PATH_LIB, 'Macaroon')).default,
 
     "verifier": {
-        "TimestampCaveatVerifier": require('./lib/verifier/TimestampCaveatVerifier')
+        "TimestampCaveatVerifier": require(path.join(PATH_LIB, '/verifier/TimestampCaveatVerifier')).default
     }
 };

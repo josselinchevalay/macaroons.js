@@ -13,10 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/// <reference path="../../typings/tsd.d.ts" />
-
-
 import {createHmac} from 'crypto';
 import {secret_box} from 'ecma-nacl';
 import MacaroonsConstants from './MacaroonsConstants';

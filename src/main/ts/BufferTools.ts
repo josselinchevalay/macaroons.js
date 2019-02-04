@@ -13,10 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/// <reference path="../../typings/tsd.d.ts" />
-
-
 export default class BufferTools {
 
  public static equals(a:Buffer, b:Buffer):boolean {

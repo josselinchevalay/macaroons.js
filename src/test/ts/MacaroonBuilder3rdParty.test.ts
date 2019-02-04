@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/// <reference path="../../typings/tsd.d.ts" />
-
 import {expect} from 'chai';
 import Base64Tools from '../../main/ts/Base64Tools';
 import {CaveatPacketType} from '../../main/ts/CaveatPacketType';

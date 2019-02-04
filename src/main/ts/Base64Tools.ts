@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/// <reference path="../../typings/tsd.d.ts" />
-
 export default class Base64Tools {
 
   public static BASE64_PADDING:string = '===';
